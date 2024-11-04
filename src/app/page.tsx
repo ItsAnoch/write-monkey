@@ -54,6 +54,7 @@ export default function Home() {
   // results modal
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const settingsModal = useDisclosure();
+  const tutorialModal = useDisclosure();
 
   const fetchRandomSentence = async (type: SentenceTypes = sentenceType, length: number = numberOfWords) => {
     let initialSentence = "";
@@ -273,6 +274,7 @@ export default function Home() {
   // Handling initial load
   useEffect(() => {
     fetchRandomSentence();
+    tutorialModal.onOpen(); // default opens the tutorial modal
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -523,6 +525,18 @@ export default function Home() {
 
   return (<>
     <div>
+      <Modal isOpen={tutorialModal.isOpen} onOpenChange={tutorialModal.onOpenChange} className="dark text-foreground">
+        <ModalContent>
+          <ModalHeader>Tutorial</ModalHeader>
+
+          <ul className="list-disc list-inside flex flex-col gap-2 px-6 pb-4 leading-8">
+            <li>Start by copying the text displayed at the top of your screen, and write it on the grid area below.</li>
+            <li>If you make a mistake, scribble over it to erase or use the eraser tool.</li>
+            <li>When you've finished copying the text, click the <Button color="primary" size="sm">Finish</Button> button to complete the test.</li>
+          </ul>
+
+        </ModalContent>
+      </Modal>
       <h1 className="text-neutral-600 box-border p-4 text-justify text-[5vw] max-h-[50vh]">{ textToCopy }</h1>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="dark text-foreground">
